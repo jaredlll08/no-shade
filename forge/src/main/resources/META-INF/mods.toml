@@ -1,0 +1,27 @@
+modLoader = "javafml"
+loaderVersion = "[41,)"
+issueTrackerURL = "https://github.com/jaredlll08/no-shade/issues"
+license = "MIT"
+
+[[mods]]
+modId = "noshade"
+updateJSONURL = "https://updates.blamejared.com/get?n=noshade&gv=1.20.1"
+version = "${file.jarVersion}"
+displayName = "NoShade"
+displayURL = "https://minecraft.curseforge.com/projects/no-shade"
+authors = "Jaredlll08"
+logoFile = "icon.png"
+description = '''
+Removes all shadows on text.
+'''
+itemIcon = "minecraft:compass"
+[[dependencies.noshade]]
+modId = "forge"
+mandatory = true
+versionRange = "[41,)"
+ordering = "NONE"
+[[dependencies.noshade]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,)"
+ordering = "NONE"

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "noshade",
+  "name": "No-Shade",
+  "version": "${version}",
+  "environment": "client",
+  "icon": "assets/noshade/icon.png",
+  "authors": [
+    "Jaredlll08"
+  ],
+  "license": "MIT",
+  "contact": {
+    "homepage": "https://minecraft.curseforge.com/projects/no-shade",
+    "sources": "https://github.com/jaredlll08/no-shade"
+  },
+  "description": "Removes all shadows on text.",
+  "entrypoints": {
+  },
+  "depends": {
+    "fabricloader": ">=0.14",
+    "java": ">=17",
+    "minecraft": "1.20.1"
+  },
+  "recommends": {
+    "fabric": "*"
+  },
+  "mixins": [
+    {
+      "config": "noshade.mixins.json",
+      "environment": "client"
+    },
+    {
+      "config": "noshade.fabric.mixins.json",
+      "environment": "client"
+    }
+  ]
+}
