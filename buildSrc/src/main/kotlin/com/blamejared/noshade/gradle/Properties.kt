@@ -10,4 +10,6 @@ object Properties {
     const val CURSE_HOMEPAGE = "https://www.curseforge.com/minecraft/mc-mods/no-shade"
     const val MODRINTH_PROJECT_ID = "goG4F6oH"
     const val GIT_REPO = "https://github.com/jaredlll08/no-shade"
+    const val DESCRIPTION = "Removes all shadows on text."
+    const val ITEM_ICON = "minecraft:spyglass"
 }
