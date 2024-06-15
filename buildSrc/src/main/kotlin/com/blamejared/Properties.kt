@@ -1,4 +1,4 @@
-package com.blamejared.noshade.gradle
+package com.blamejared
 
 object Properties {
     const val GROUP = "com.blamejared.noshade"
