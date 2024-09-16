@@ -1,19 +1,17 @@
 import com.blamejared.gradle.mod.utils.GMUtils
-import com.blamejared.noshade.gradle.Properties
-import com.blamejared.noshade.gradle.Versions
+import com.blamejared.Properties
+import com.blamejared.Versions
+import net.darkhax.curseforgegradle.Constants
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
-import net.darkhax.curseforgegradle.Constants as CFG_Constants
 
 plugins {
-    id("com.blamejared.noshade.default")
-    id("com.blamejared.noshade.loader")
+    id("blamejared-modloader-conventions")
     id("net.minecraftforge.gradle") version ("[6.0,6.2)")
     id("org.spongepowered.mixin") version ("0.7-SNAPSHOT")
     id("com.modrinth.minotaur")
 }
 
 mixin {
-    add(sourceSets.main.get(), "${Properties.MODID}.refmap.json")
     config("${Properties.MODID}.mixins.json")
     config("${Properties.MODID}.forge.mixins.json")
 }
@@ -21,6 +19,7 @@ mixin {
 minecraft {
     mappings("official", Versions.MINECRAFT)
     accessTransformer(file("src/main/resources/META-INF/accesstransformer.cfg"))
+    reobf = false
     runs {
         create("client") {
             taskName("Client")
@@ -30,7 +29,6 @@ minecraft {
             mods {
                 create(Properties.MODID) {
                     source(sourceSets.main.get())
-                    source(project(":common").sourceSets.main.get())
                 }
             }
         }
@@ -39,8 +37,8 @@ minecraft {
 
 dependencies {
     "minecraft"("net.minecraftforge:forge:${Versions.MINECRAFT}-${Versions.FORGE}")
-    implementation(project(":common"))
-    annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
+    annotationProcessor("org.spongepowered:mixin:0.8.7-SNAPSHOT:processor")
+    implementation("net.sf.jopt-simple:jopt-simple:5.0.4") { version { strictly("5.0.4") } }
 }
 
 sourceSets.configureEach {
@@ -56,7 +54,7 @@ tasks.create<TaskPublishCurseForge>("publishCurseForge") {
     val mainFile = upload(Properties.CURSE_PROJECT_ID, tasks.jar.get().archiveFile)
     mainFile.changelogType = "markdown"
     mainFile.changelog = GMUtils.smallChangelog(project, Properties.GIT_REPO)
-    mainFile.releaseType = CFG_Constants.RELEASE_TYPE_RELEASE
+    mainFile.releaseType = Constants.RELEASE_TYPE_RELEASE
     mainFile.addJavaVersion("Java ${Versions.JAVA}")
 
     doLast {
@@ -70,6 +68,16 @@ modrinth {
     changelog.set(GMUtils.smallChangelog(project, Properties.GIT_REPO))
     versionName.set("Forge-${Versions.MINECRAFT}-$version")
     versionType.set("release")
+    gameVersions.set(listOf(Versions.MINECRAFT))
     uploadFile.set(tasks.jar.get())
+    loaders.add("forge")
 }
 tasks.modrinth.get().dependsOn(tasks.jar)
+
+tasks {
+    named<Jar>("jar").configure {
+        manifest {
+            attributes["MixinConfigs"] = "${Properties.MODID}.mixins.json,${Properties.MODID}.forge.mixins.json"
+        }
+    }
+}

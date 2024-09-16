@@ -17,5 +17,5 @@ plugins {
 rootProject.name = "no-shade"
 include("common")
 include("fabric")
-//include("forge")
+include("forge")
 include("neoforge")
